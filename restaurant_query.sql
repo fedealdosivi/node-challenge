@@ -5,6 +5,7 @@ use dbRestaurant;
 DROP TABLE IF EXISTS RESTAURANTS;
 DROP TABLE IF EXISTS REVIEWS;
 DROP TABLE IF EXISTS MEALSXRESTAURANT;
+DROP TABLE IF EXISTS MEALSXORDER;
 DROP TABLE IF EXISTS MEALS;
 DROP TABLE IF EXISTS ORDERS;
  
@@ -61,10 +62,34 @@ create table MEALSXRESTAURANT
    IDMXR                integer AUTO_INCREMENT not null,
    IDMEAL            	integer not null,
    IDRESTAURANT       	integer not null,
-   SERVED               boolean default false,
    primary key (IDMXR)
  );
  
+/*==============================================================*/
+/* Table: ORDERS		                            			*/
+/*==============================================================*/
+ 
+ create table ORDERS
+ (
+	IDORDER				integer AUTO_INCREMENT not null,
+    TOTALCOST			float not null,
+    ADRESS				varchar(200) not null,
+    latLong				varchar(200)not null,
+    ETA					float,
+    primary key(IDORDER)
+ );
+ 
+/*==============================================================*/
+/* Table: MEALSXORDER	                            			*/
+/*==============================================================*/
+
+create table MEALSXORDER
+ (
+   IDMXO                integer AUTO_INCREMENT not null,
+   IDMEAL            	integer not null,
+   IDORDER		       	integer not null,
+   primary key (IDMXO)
+ );
  
  
 alter table REVIEWS add constraint FK_REVIEW_RESTAURANT foreign key (IDRESTAURANT)
@@ -75,5 +100,11 @@ references MEALS (IDMEAL);
 
 alter table MEALSXRESTAURANT add constraint FK_MXR_RESTAURANT foreign key (IDRESTAURANT)
 references RESTAURANTS (IDRESTAURANT);
+
+alter table MEALSXORDER add constraint FK_MXO_MEAL foreign key (IDMEAL)
+references MEALS (IDMEAL);
+
+alter table MEALSXORDER add constraint FK_MXO_ORDER foreign key (IDORDER)
+references ORDERS (IDORDER);
 
 
